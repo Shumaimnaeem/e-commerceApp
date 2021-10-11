@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header" style="font-weight: 500;">
+            Past Orders
+          </div>
+        <ul *ngFor= "let order of orderWithProducts">
+            <div class= "card">
+                <div class= "mainDiv">
+                    <div class="card-body" class="firstDiv">
+                        <div class= "title" style="font-size: medium;" > Order Id: {{order.order}} </div>
+                        <div class= "title" style="font-size: small" > Date: {{order.date | date}} </div>
+                    </div>
+                    <div class="secondDiv">
+                        <div class= "title" style="font-size: medium;" > Total Bill: {{order.amount}}</div>
+                    </div>
+
+                </div>
+            </div>   
+            <div class="card-body">
+                <ul class= "list" *ngFor = "let product of order.products">
+                    <li class="list-group-item" >
+                       {{product.name}}
+                    </li>
+    
+                </ul>
+            </div>
+            
+        </ul>
+        <button  [routerLink]="['/home']" class="btn btn-secondary">Back</button>
+      </div>
+</div>
