@@ -1,0 +1,33 @@
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div class="modal-body">
+            <ul class= "mainProd" *ngFor = "let product of products">
+                <div class="prodName">
+                    <li>{{product.name}}
+                    </li>
+                </div>
+                <div class= "deleteProd">
+                    <i style="margin-right: 5%;" class="fa fa-trash-o" (click)= "deleteProduct(product)"></i>
+                </div>
+            </ul>
+            <div *ngIf= "products.length== 0">
+                Your cart is empty
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <div style="left: 2px; position: absolute;" *ngIf= "products.length > 0">
+                <b >Total Amount: </b> {{amount}}
+            </div>
+            <button *ngIf= "products.length > 0" type="button" class="btn btn-info" (click)="viewFinalReceipt()">View Final Receipt</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </div>
+</div>

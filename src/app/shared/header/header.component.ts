@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
-import { ViewCartComponent } from '../../view-cart/view-cart.component';
+import { ViewCartComponent } from 'src/app/cart/view-cart/view-cart.component';
 import { ProductService } from '../services/product.service';
 import { IProduct } from '../interface/product';
 import { IUser } from '../interface/user';

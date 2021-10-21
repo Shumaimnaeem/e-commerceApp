@@ -4,10 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/models/user';
 import { IProduct } from '../../shared/interface/product';
-import { ViewCartComponent } from '../../view-cart/view-cart.component';
+import { ViewCartComponent } from 'src/app/cart/view-cart/view-cart.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { IUser } from 'src/app/shared/interface/user';
+import { AuthService } from 'src/app/auth/AuthService/auth.service';
 @Component({
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
@@ -15,29 +17,25 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class AllProductsComponent implements OnInit {
   products : IProduct[]= [];
-  user : any
+  user : IUser = new User;
   productsCount = 0;
   count =0;
   clicked = false;
   productsList : IProduct[] =[];
 
-  constructor(private productService : ProductService, private route : ActivatedRoute , 
-    private userService : UserService, private modalService: NgbModal,
+  constructor(private productService : ProductService, 
+    private modalService: NgbModal,
     private toasterService: ToastrService,
-    private router : Router) { 
-    this.user = new User;
+    private router : Router, 
+    private authService : AuthService) { 
   } 
 
   async ngOnInit(){
-   const userId = localStorage.getItem('User')
-   if(userId){
-    this.user= await this.userService.getUser(+userId);
+    this.user = await this.authService.getUserDetail();
     console.log("User: ", this.user);
-   }
-   const products:any = await this.productService.getProducts();
-   this.products = products;
-
-   console.log("products: ", this.products);
+    const products:any = await this.productService.getProducts();
+    this.products = products;
+    console.log("products: ", this.products);
   }
 
   addToCart(product: IProduct){
