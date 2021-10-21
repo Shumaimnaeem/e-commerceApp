@@ -1,0 +1,28 @@
+.cart-basket {
+    font-size: .6rem;
+    position: absolute;
+    top: 6.7px;
+    right: 7.4%;
+    width: 15px;
+    height: 15px;
+    color: #fff;
+    background-color: #418deb;
+    border-radius: 50%;
+  }
+.header{
+    width: 100% !important;
+}
+.divideNav{
+    width: 100%;
+    display: flex;
+}
+.firstHalfNav{
+    width: 90%;
+}
+.secondHalfNav{
+    width: 10%;
+}
+.router-link-active { 
+    font-weight : 900;
+    color: rgb(238, 219, 175) !important
+}

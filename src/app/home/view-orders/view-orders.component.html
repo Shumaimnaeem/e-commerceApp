@@ -1,9 +1,28 @@
-<div class="container">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<app-header></app-header>
+<div *ngIf="!loggedInUser">
+    <span>You can not see other User's Orders.</span>
+</div>
+<div *ngIf="loggedInUser" class="container">
+    
     <div class="card">
-        <div class="card-header" style="font-weight: 500;">
+        <div class="card-header">
             Past Orders
+            <span class="backBtn">
+                <button [routerLink]="['/home']" class="fa fa-long-arrow-left"></button>
+            </span>
           </div>
-        <ul *ngFor= "let order of orderWithProducts">
+        <div *ngIf= "orderWithProducts.length == 0">
+            <span style="text-align: center;">You Don't have any Orders yet</span>
+        </div>
+        
+        <ul *ngFor= "let order of orderWithProducts.slice().reverse()">
+            <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+                <p style="color: white">Please Wait. </p>  
+            </ngx-spinner> 
             <div class= "card">
                 <div class= "mainDiv">
                     <div class="card-body" class="firstDiv">
@@ -21,11 +40,12 @@
                     <li class="list-group-item" >
                        {{product.name}}
                     </li>
-    
                 </ul>
             </div>
-            
         </ul>
-        <button  [routerLink]="['/home']" class="btn btn-secondary">Back</button>
+
+        
+        
       </div>
 </div>
+

@@ -1,24 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddProductComponent } from './add-product/add-product.component';
-import { HomeComponent } from './home/home.component';
 import { HomeModule } from './home/home.module';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { ViewOrdersComponent } from './home/view-orders/view-orders.component';
-
-
-
+import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
 const routes: Routes = [
-  { path:'', component: SignupComponent},
-  { path:'login', component: LoginComponent},
-  { path: 'Home', loadChildren:()=> import('./home/home.module').then((m: any) => {return m.HomeModule}) },
-  { path:'addProduct',component: AddProductComponent},
+  { path:'', loadChildren:()=> import('./auth/auth.module').then((m: any) => {return m.AuthModule})},
+  { path:'signup', loadChildren:()=> import('./auth/auth.module').then((m: any) => {return m.AuthModule})},
+  { path: 'home', loadChildren:()=> import('./home/home.module').then((m: any) => {return m.HomeModule}) },
+  { path:'addProduct',loadChildren:()=> import('./product/product.module').then((m: any) => {return m.ProductModule})},
   { path: 'viewOrders/:id', loadChildren: () => import('./home/home.module').then((m:any) => {return m.HomeModule})},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), HomeModule],
+  imports: [RouterModule.forRoot(routes), HomeModule, AuthModule, ProductModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,0 +1,24 @@
+<div class = "mainDisplay">
+    <h1 class = "allProd">All Products</h1>
+      <button *ngIf = "user.role == 'Admin'" [routerLink]="['/addProduct']"  class= "addProd" type="button" class="btn btn-info">Add New Product</button>
+</div>
+
+<div *ngIf = "products.length == 0">
+    <span style="text-align: center;">No Products to show</span> 
+</div>
+<div class="row" id="ads">
+        <!-- Category Card -->
+        <div class="col-md-4" *ngFor = "let product of products.slice().reverse()">
+            <div class="card rounded">
+                <div class="card-body text-center">
+                    <div class="ad-title m-auto">
+                        <h5>{{product.name}}</h5>
+                        <h6>{{product.description}}</h6>
+                        <img *ngIf= "!product.imageUrl" src= {{getUrl(product)}}  height="200" width="300">
+                        <img *ngIf= "product.imageUrl" [src]= "product.imageUrl"  height="200" width="300">
+                    </div>
+                    <button *ngIf = "user.role != 'Admin'" class="ad-btn" type="button" (click)="addToCart(product)" [ngClass] = "{'buttonClick':product.quantity == 0}" [disabled]="product.quantity == 0" >Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>

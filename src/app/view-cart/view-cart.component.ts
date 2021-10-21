@@ -1,18 +1,16 @@
 import { Component, OnInit , Input, NgModuleRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../services/user.service';
+import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import {map} from 'rxjs/operators';
-import { IUser } from '../interface/user';
-import { User } from '../models/user';
-import { CartService } from '../services/cart.service';
+import { IUser } from '../shared/interface/user';
+import { User } from '../shared/models/user';
+import { CartService } from '../shared/services/cart.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ProductService } from '../services/product.service';
-import { IProduct } from '../interface/product';
-import { Product } from '../models/product';
-import { Cart } from '../models/cart';
-import { ICart } from '../interface/cart';
+import { ProductService } from '../shared/services/product.service';
+import { IProduct } from '../shared/interface/product';
+import { ICart } from '../shared/interface/cart';
 import { ViewReceiptComponent } from '../view-receipt/view-receipt.component';
 
 
@@ -30,6 +28,7 @@ export class ViewCartComponent implements OnInit {
   user : IUser= new User;
   cartProducts : ICart[] = [] ;
   amount= 0;
+  productsLength =0;
 
 
   constructor(public activeModal: NgbActiveModal, private userService : UserService, 
@@ -41,6 +40,9 @@ export class ViewCartComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.productsLength = this.products.length;
+    console.log("productsLength: ", this.productsLength);
+    
     this.calculateAmount();  
   }
   calculateAmount(){
@@ -64,6 +66,8 @@ export class ViewCartComponent implements OnInit {
 
   deleteProduct(product:IProduct){
     console.log("product: ", product);
+    this.productsLength--;
+    this.productService.setLatestValue(this.productsLength);
     this.products = this.products.filter((cartProduct) =>{
       console.log("p:", cartProduct);
       return product.id !== cartProduct.id

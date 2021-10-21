@@ -1,42 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {NgForm, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { IUser } from '../interface/user';
+import { UserService } from '../../shared/services/user.service';
+import { IUser } from '../../shared/interface/user';
+import { User } from '../../shared/models/user';
 import { map } from 'rxjs/operators';
-import { User } from '../models/user';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../AuthService/auth.service';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+
   users : IUser[] = [];
+  subscriptions: Subscription[] = [];
   user : IUser= new User;
   userExist : boolean = true;
   form = this.fb.group({
     "username": ["", Validators.required],
     "password": ["", Validators.required]
   });
-  constructor(private router : Router, private userService : UserService, private fb: FormBuilder){
+  constructor(private router : Router, private userService : UserService, private fb: FormBuilder, private authService : AuthService){
 
   }
 
   async ngOnInit(){
-    const user = localStorage.getItem('User');
+    const user:IUser = await this.authService.getUserDetail();
     console.log("User: ", user);
     if(user !== null){
-      const loggedInUser:any = await this.userService.getUser(user);
-      console.log("loggedInUser: ", loggedInUser );
-      this.router.navigate(['/home',{username : loggedInUser.email , password: loggedInUser.password}]);
+      this.router.navigate(['/home',{username : user.email , password: user.password}]);
     }
   }  
   onSubmit() {
     console.log("form: ", this.form);
     const cUser = this.form.value
     console.log("cuser: ", cUser);
-    this.userService.getUsers().pipe(
+    this.subscriptions.push(
+      this.userService.getUsers().pipe(
         map( (users: any) => {
           console.log("Users: ", users, cUser.username, cUser.password);
           return users.filter((user:IUser) =>  {
@@ -47,17 +51,24 @@ export class LoginComponent implements OnInit {
     ).subscribe((user: IUser[] ) => {
       this.user = user[0]
       this.userService.user = this.user;
-      console.log("user: ", this.user);
+      console.log("user: ", user);
       if(this.user){
         localStorage.setItem('User', this.user.id);
-        this.router.navigate(['/home',{username : this.user.email , password: this.user.password}]);
+        this.router.navigate(['/home']);
       }
       else{
         this.userExist = false;
       }
-      
     })
-    
+    )
+  }
+
+  ngOnDestroy(){
+    if(!!this.subscriptions){
+      while(this.subscriptions.length > 0){
+        this.subscriptions.pop();
+      }
+    }
   }
 
 }

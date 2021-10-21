@@ -1,0 +1,33 @@
+<div class= "header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class= "divideNav">
+          <div class= "firstHalfNav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a style="color: blanchedalmond;" class="nav-link"  [routerLink]="['/home']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]={exact:true}>Home</a>
+            </li>
+            <li *ngIf = "user.role !== 'Admin'" class="nav-item">
+                <a style="color: blanchedalmond;" class="nav-link" [routerLink]="['/viewOrders', user.id]" [routerLinkActive]="['router-link-active']">My Orders</a>
+              </li>
+            </ul>
+          </div> 
+          <div class="secondHalfNav"> 
+            <ul  class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <div *ngIf = "user.role !== 'Admin'">
+                    <i type="button" class="fa fa-shopping-cart" style="font-size:48px; margin-right: 1%; color: blanchedalmond;" (click) = "viewCart()"></i>
+                    <span  *ngIf ="productsCount > 0" class="cart-basket d-flex align-items-center justify-content-center">
+                        {{productsCount}}
+                    </span>
+                </div>  
+            </li>
+            <li class="nav-item">
+                <a type="button" style="color: blanchedalmond; margin-left: 30px; width: 85px;" class="nav-link" class="btn btn-secondary" (click)= "logout()">Log Out</a>
+            </li>
+           </ul>
+        </div>
+        </div>  
+       </div>
+    </nav>
+</div>

@@ -32,3 +32,20 @@
 .btn{
     opacity: 0.5;
 }
+.backBtn{
+    position: absolute;
+    width: 5%;
+    right: 0;
+}
+
+.card-header{
+    width: 100%;
+    display: flex;
+    position: relative;
+    height: 20%;
+    font-weight: 500;
+}
+.orderDiv{
+    width: 90%;
+    position: absolute;
+}
