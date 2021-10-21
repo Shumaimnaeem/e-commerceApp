@@ -28,4 +28,15 @@ export class AuthService {
     }
     return this.user;
   }
+  async isUserSame(id:number){
+    const userId = localStorage.getItem('User');
+    if(userId){
+      if(+userId === id)
+        return true;
+      else
+        return false;  
+    }
+    else
+        return false;
+  }
 }

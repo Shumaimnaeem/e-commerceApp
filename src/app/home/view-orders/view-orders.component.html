@@ -3,10 +3,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <app-header></app-header>
-<div *ngIf="!loggedInUser">
+<div *ngIf="!isUserSame">
     <span>You can not see other User's Orders.</span>
 </div>
-<div *ngIf="loggedInUser" class="container">
+<div *ngIf="isUserSame" class="container">
     
     <div class="card">
         <div class="card-header">
@@ -15,7 +15,7 @@
                 <button [routerLink]="['/home']" class="fa fa-long-arrow-left"></button>
             </span>
           </div>
-        <div *ngIf= "orderWithProducts.length == 0">
+        <div [hidden]= "orderWithProducts.length !== 0">
             <span style="text-align: center;">You Don't have any Orders yet</span>
         </div>
         

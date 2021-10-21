@@ -28,8 +28,9 @@ export class AddProductComponent implements OnInit {
     console.log("file: ", event.target.files[0]);
     this.product.image = event.target.files[0].name;
     console.log("image: ", this.product.image);
-    
-    
+  }
+  goBack(){
+    return this.router.navigate(['/home']);
   }
 
 }

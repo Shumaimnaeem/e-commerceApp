@@ -20,8 +20,10 @@ export class UserService {
     console.log("User service: ", u);
     return await this.http.post('https://61556a8093e3550017b089b8.mockapi.io/user', u).toPromise();
   }
-  getUsers(){
-    return this.http.get('https://61556a8093e3550017b089b8.mockapi.io/user')
+  getUsers(): Observable<IUser[]>{
+    const users: any = this.http.get('https://61556a8093e3550017b089b8.mockapi.io/user');
+    const allUsers: Observable<IUser[]>= users;
+    return allUsers;
   }
   async getUser(id:number){
     const url = `https://61556a8093e3550017b089b8.mockapi.io/user/${id}`;

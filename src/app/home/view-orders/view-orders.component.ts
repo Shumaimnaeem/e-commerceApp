@@ -28,7 +28,7 @@ export class ViewOrdersComponent implements OnInit, OnDestroy {
   productsByOrder: IProduct[] =[];
   orderWithProducts : IOrderAndProducts[] = [];
   subscriptions: Subscription[] = [];
-  loggedInUser: Boolean = true;
+  isUserSame: Boolean = false;
   constructor(private orderService : OrderService, private route: ActivatedRoute,
     private productService :ProductService, private router :Router, private authService : AuthService,
     private SpinnerService: NgxSpinnerService) { }
@@ -36,26 +36,24 @@ export class ViewOrdersComponent implements OnInit, OnDestroy {
   async ngOnInit(){
     const id = this.route.snapshot.paramMap.get('id');
     console.log("Id: ", id);
-    const CurrentUser = await this.authService.getUserDetail();
-    console.log("id: ", CurrentUser.id );
-    const allProducts:any = await this.productService.getProducts();
-    this.productsByOrder = allProducts;
+    if(id){
+      this.isUserSame = await this.authService.isUserSame(+id);
+      console.log("isUserSame: ", this.isUserSame );
+    }
+    this.productsByOrder = await this.productService.getProducts();
     this.subscriptions.push(
       this.orderService.getAllOrders().pipe(
-        map((orders:any)=>{
+        map((orders: IOrder[])=>{
           return orders.filter((order : IOrder) => {
               return order.userId == id
           })
         })
       ).
-      subscribe((orders:any) => {
+      subscribe((orders:IOrder[]) => {
         this.orders = orders;
         console.log("All Orders: ", this.orders);
-        if(id === CurrentUser.id ){
+        if(this.isUserSame ){
           this.getOrders();
-        }
-        else{
-          this.loggedInUser = false;
         }
       })
     )
@@ -73,7 +71,6 @@ export class ViewOrdersComponent implements OnInit, OnDestroy {
       orderAndProducts.products = products;
       return orderAndProducts;
     });   
-
     this.orderWithProducts = await Promise.all(allOrders);
     console.log("Order And Products: ", this.orderWithProducts);
     

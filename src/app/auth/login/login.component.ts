@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   async ngOnInit(){
     const user:IUser = await this.authService.getUserDetail();
     console.log("User: ", user);
-    if(user !== null){
-      this.router.navigate(['/home',{username : user.email , password: user.password}]);
+    if(user){
+      this.router.navigate(['/home']);
     }
   }  
   onSubmit() {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     console.log("cuser: ", cUser);
     this.subscriptions.push(
       this.userService.getUsers().pipe(
-        map( (users: any) => {
+        map( (users: IUser[]) => {
           console.log("Users: ", users, cUser.username, cUser.password);
           return users.filter((user:IUser) =>  {
             console.log("U: ", user);
